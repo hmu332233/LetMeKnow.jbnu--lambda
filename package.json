@@ -1,0 +1,22 @@
+{
+  "name": "help-jbnu--search",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmu332233/LetMeKnow.jbnu--search.git"
+  },
+  "author": "minung.han",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hmu332233/LetMeKnow.jbnu--search/issues"
+  },
+  "homepage": "https://github.com/hmu332233/LetMeKnow.jbnu--search#readme",
+  "dependencies": {
+    "googleapis": "^27.0.0"
+  }
+}
