@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/hmu332233/LetMeKnow.jbnu--search#readme",
   "dependencies": {
-    "googleapis": "^27.0.0"
+    "cheerio": "^1.0.0-rc.2",
+    "googleapis": "^27.0.0",
+    "mongodb": "^3.1.13",
+    "request": "^2.88.0"
   }
 }
