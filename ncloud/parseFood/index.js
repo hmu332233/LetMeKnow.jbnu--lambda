@@ -71,15 +71,27 @@ function main(params) {
       await insertDocument(db, { collectionName: 'medi', data: mediData});
       await insertDocument(db, { collectionName: 'studentHall', data: studentHallData});
 
+      sendMessage();
+
       db.on('close', () => {
         console.log('Disconnected to server');
       });
 
       client.close();
     });
-  });
-
-  
+  });  
 }
 
-main();
+const BOT_URL = '';
+function sendMessage({ message } = {}) {
+  const options = {
+    uri: BOT_URL,
+    method: 'POST',
+    json: {
+      text: '파싱이 완료되었습니다.'
+    }
+  };
+  request.post(options);
+}
+
+exports.main = main;

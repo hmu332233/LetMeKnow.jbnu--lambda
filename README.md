@@ -1,1 +1,1 @@
-# LetMeKnow.jbnu-search
+# 알려줘전북대 scripts
