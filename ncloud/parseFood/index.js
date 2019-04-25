@@ -1,4 +1,4 @@
-const request = require('request');
+const axios = require('axios');
 const cheerio = require('cheerio');
 const MongoClient = require('mongodb').MongoClient;
 
@@ -28,61 +28,61 @@ function parseTable($, $table, { place }) {
   }
 }
 
-function getMenus(callback) {
-  request('http://sobi.chonbuk.ac.kr/chonbuk/m040101', (err, res, body) => {
-    const $ = cheerio.load(body);
+async function getHtml() {
+  const { data } = await axios.get('http://sobi.chonbuk.ac.kr/chonbuk/m040101');
+  return data;
+}
 
-    const $table = $('#sub_right table');
-    const $jinsu = $table.eq(0);
-    const $medi = $table.eq(1);
-    const $studentHall = $table.eq(2);
-    const $hu = $table.eq(3);
-    const $jungdam = $table.eq(4);
-    
-    const jinsuData = parseTable($, $jinsu, { place: '진수당' });
-    const mediData = parseTable($, $medi, { place: '의대' });
-    const studentHallData = parseTable($, $studentHall, { place: '학생회관' });
+function parseMenus(html) {
+  const $ = cheerio.load(html);
 
-    callback({
-      jinsuData,
-      mediData,
-      studentHallData
-    });
-  });
+  const $table = $('#sub_right table');
+  const $jinsu = $table.eq(0);
+  const $medi = $table.eq(1);
+  const $studentHall = $table.eq(2);
+  const $hu = $table.eq(3);
+  const $jungdam = $table.eq(4);
+  
+  const jinsuData = parseTable($, $jinsu, { place: '진수당' });
+  const mediData = parseTable($, $medi, { place: '의대' });
+  const studentHallData = parseTable($, $studentHall, { place: '학생회관' });
+
+  return {
+    jinsuData,
+    mediData,
+    studentHallData
+  };
+}
+
+async function connectDB() {
+  const url = '';
+  const client = await MongoClient.connect(url, { useNewUrlParser: true });
+  return client;
 }
 
 async function insertDocument(db, { collectionName, data }) {
   const collection = db.collection(collectionName);
   await collection.insertOne(data);
-  // console.log('complete!', collectionName)
+}
+
+async function process() {
+  const html = await getHtml();
+  const { jinsuData, mediData, studentHallData } = parseMenus(html);
+  
+  const client = await connectDB();
+  const db = client.db('menus');
+
+  await insertDocument(db, { collectionName: 'jinsu', data: jinsuData });
+  await insertDocument(db, { collectionName: 'medi', data: mediData });
+  await insertDocument(db, { collectionName: 'studentHall', data: studentHallData });
+
+  client.close();
+
+  return { done: true };
 }
 
 function main(params) {
-  return new Promise(function(resolve, reject) {
-    getMenus(({ jinsuData, mediData, studentHallData }) => {
-  
-      const url = '';
-      MongoClient.connect(url, { useNewUrlParser: true }, async (err, client) => {
-  
-        // console.log("Connected successfully to server");
-      
-        const db = client.db('menus');
-  
-        await insertDocument(db, { collectionName: 'jinsu', data: jinsuData});
-        await insertDocument(db, { collectionName: 'medi', data: mediData});
-        await insertDocument(db, { collectionName: 'studentHall', data: studentHallData});
-  
-        sendMessage();
-  
-        db.on('close', () => {
-          // console.log('Disconnected to server');
-          resolve({ done: true });
-        });
-  
-        client.close();
-      });
-    });
-  });  
+  return process();
 }
 
 const BOT_URL = '';
