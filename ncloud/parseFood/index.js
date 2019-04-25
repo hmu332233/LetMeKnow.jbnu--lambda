@@ -54,30 +54,33 @@ function getMenus(callback) {
 async function insertDocument(db, { collectionName, data }) {
   const collection = db.collection(collectionName);
   await collection.insertOne(data);
-  console.log('complete!', collectionName)
+  // console.log('complete!', collectionName)
 }
 
 function main(params) {
-  getMenus(({ jinsuData, mediData, studentHallData }) => {
+  return new Promise(function(resolve, reject) {
+    getMenus(({ jinsuData, mediData, studentHallData }) => {
   
-    const url = '';
-    MongoClient.connect(url, { useNewUrlParser: true }, async (err, client) => {
-
-      console.log("Connected successfully to server");
-    
-      const db = client.db('menus');
-
-      await insertDocument(db, { collectionName: 'jinsu', data: jinsuData});
-      await insertDocument(db, { collectionName: 'medi', data: mediData});
-      await insertDocument(db, { collectionName: 'studentHall', data: studentHallData});
-
-      sendMessage();
-
-      db.on('close', () => {
-        console.log('Disconnected to server');
+      const url = '';
+      MongoClient.connect(url, { useNewUrlParser: true }, async (err, client) => {
+  
+        // console.log("Connected successfully to server");
+      
+        const db = client.db('menus');
+  
+        await insertDocument(db, { collectionName: 'jinsu', data: jinsuData});
+        await insertDocument(db, { collectionName: 'medi', data: mediData});
+        await insertDocument(db, { collectionName: 'studentHall', data: studentHallData});
+  
+        sendMessage();
+  
+        db.on('close', () => {
+          // console.log('Disconnected to server');
+          resolve({ done: true });
+        });
+  
+        client.close();
       });
-
-      client.close();
     });
   });  
 }
