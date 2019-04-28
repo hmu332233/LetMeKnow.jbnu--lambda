@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 async function getHtml(url) {
   const res = await axios.get(url);
   
@@ -7,6 +9,14 @@ async function getHtml(url) {
   return res.data;
 }
 
+async function sendSlackMessage({ url, message } = {}) {
+  const data = {
+    text: message
+  };
+  return await axios.post(url, data);
+}
+
 module.exports = {
-  getHtml
+  getHtml,
+  sendSlackMessage
 }

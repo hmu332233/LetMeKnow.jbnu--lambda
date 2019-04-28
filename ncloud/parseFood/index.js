@@ -1,6 +1,4 @@
-const axios = require('axios');
-
-const { getHtml } = require('./modules/utils');
+const { getHtml, sendSlackMessage } = require('./modules/utils');
 const { connectDB, insertDocument } = require('./modules/db');
 const { parseMenus } = require('./modules/parse');
 const { normalize } = require('./modules/normalize');
@@ -38,6 +36,8 @@ async function process() {
   }
 
   await client.close();
+
+  sendSlackMessage({ url: BOT_URL, message: '파싱이 완료되었습니다.' });
 
   return { done: true };
 }
