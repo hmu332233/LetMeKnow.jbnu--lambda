@@ -25,11 +25,15 @@ function parseMenus(html) {
   const jinsuMenus = parseTable($, $jinsu);
   const mediMenus = parseTable($, $medi);
   const studentHallMenus = parseTable($, $studentHall);
+  const huMenus = parseTable($, $hu);
+  const jungdamMenus = parseTable($, $jungdam);
 
   return {
     jinsuMenus,
     mediMenus,
-    studentHallMenus
+    studentHallMenus,
+    huMenus,
+    jungdamMenus
   };
 }
 

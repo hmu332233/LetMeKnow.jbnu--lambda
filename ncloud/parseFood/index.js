@@ -1,7 +1,7 @@
 const { getHtml, sendSlackMessage } = require('./modules/utils');
 const { connectDB, insertDocument } = require('./modules/db');
 const { parseMenus } = require('./modules/parse');
-const { normalize } = require('./modules/normalize');
+const { normalize, normalizeHu } = require('./modules/normalize');
 
 const DB_URL = '';
 const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/chonbuk/m040101';
@@ -13,21 +13,29 @@ async function process() {
     connectDB(DB_URL)
   ]);
 
-  const { jinsuMenus, mediMenus, studentHallMenus } = parseMenus(html);
+  const { jinsuMenus, mediMenus, studentHallMenus, huMenus, jungdamMenus } = parseMenus(html);
 
-  const db = client.db('menus');
+  const db = client.db('test');
   const dataList = [
     {
-      collectionName: 'jinsu',
+      collectionName: 'jinsu_menus',
       data: normalize('진수당', jinsuMenus)
     },
     {
-      collectionName: 'medi',
+      collectionName: 'medi_menus',
       data: normalize('의대', mediMenus)
     },
     {
-      collectionName: 'studentHall',
+      collectionName: 'student_hall_menus',
       data: normalize('학생회관', studentHallMenus)
+    },
+    {
+      collectionName: 'hu_menus',
+      data: normalizeHu('후생관', huMenus)
+    },
+    {
+      collectionName: 'jungdam_menus',
+      data: normalize('정담원', jungdamMenus)
     }
   ];
 
