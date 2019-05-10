@@ -21,6 +21,10 @@ function main(params) {
 
   const name = params.action.detailParams.department_name.value;
   const info = _.find(data, { name });
+  if (!info) {
+    const regex = new RegExp(' ', 'g');
+    info = _.find(data, infos => infos.name.replace(regex, '') === name); 
+  }
   return {
     "version": "2.0",
     "data": info
