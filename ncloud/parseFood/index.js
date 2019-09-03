@@ -45,7 +45,7 @@ async function process() {
 
   await client.close();
 
-  sendSlackMessage({ url: BOT_URL, message: '파싱이 완료되었습니다.' });
+  await sendSlackMessage({ url: BOT_URL, message: '파싱이 완료되었습니다.' });
 
   return { done: true };
 }
