@@ -4,7 +4,7 @@ const { parseMenus } = require('./modules/parse');
 const { normalize, normalizeHu } = require('./modules/normalize');
 
 const DB_URL = '';
-const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/chonbuk/m040101';
+const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/menu/week_menu.php';
 const BOT_URL = '';
 
 async function process() {
