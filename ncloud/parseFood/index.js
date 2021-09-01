@@ -13,7 +13,7 @@ async function process() {
     connectDB(DB_URL)
   ]);
 
-  const { jinsuMenus, mediMenus, studentHallMenus, huMenus, jungdamMenus } = parseMenus(html);
+  const { jinsuMenus, mediMenus, huMenus, jungdamMenus } = parseMenus(html);
 
   const db = client.db('test');
   const dataList = [
@@ -24,10 +24,6 @@ async function process() {
     {
       collectionName: 'medi_menus',
       data: normalize('의대', mediMenus)
-    },
-    {
-      collectionName: 'student_hall_menus',
-      data: normalize('학생회관', studentHallMenus)
     },
     {
       collectionName: 'hu_menus',
