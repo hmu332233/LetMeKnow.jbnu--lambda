@@ -32,18 +32,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
 #         cache: 'yarn'
 
-#     - name: Cache node modules
-#       uses: actions/cache@v2
-#       # 해당 step을 대표하는 id를 설정
-#       id: cache
-#       with:
-#         path: node_modules
-#         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#         restore-keys: |
-#           ${{ runner.os }}-yarn-
+    - name: Cache node modules
+      uses: actions/cache@v2
+      # 해당 step을 대표하는 id를 설정
+      id: cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+
     - name: Install
       run: yarn install
       working-directory: ${{ env.WORKING_DIRECTORY }}
+      
     - name: Run
       run: yarn start
       env:
