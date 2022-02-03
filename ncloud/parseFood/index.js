@@ -3,9 +3,10 @@ const { connectDB, insertDocument } = require('./modules/db');
 const { parseMenus } = require('./modules/parse');
 const { normalize, normalizeHu } = require('./modules/normalize');
 
-const DB_URL = '';
+const DB_URL = process.env.DB_URL;
 const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/menu/week_menu.php';
-const BOT_URL = '';
+const BOT_URL = process.env.BOT_URL;
+
 
 async function process() {
   const [html, client] = await Promise.all([
@@ -46,8 +47,4 @@ async function process() {
   return { done: true };
 }
 
-function main(params) {
-  return process();
-}
-
-exports.main = main;
+process();
