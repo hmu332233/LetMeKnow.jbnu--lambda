@@ -8,7 +8,7 @@ const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/menu/week_menu.php';
 const BOT_URL = process.env.BOT_URL;
 
 
-async function process() {
+async function main() {
   const [html, client] = await Promise.all([
     getHtml(PARSE_TARGET_URL),
     connectDB(DB_URL)
@@ -47,4 +47,4 @@ async function process() {
   return { done: true };
 }
 
-process();
+main();
