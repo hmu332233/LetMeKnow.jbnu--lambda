@@ -1,0 +1,51 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: ParseFood
+
+on:
+  workflow_dispatch:
+#   schedule:
+#   - cron: '0 1 * * *'
+#   - cron: '0 5 * * *'
+#   - cron: '0 9 * * *'
+#   - cron: '0 13 * * *'
+
+jobs:
+  parse:
+
+    runs-on: ubuntu-latest
+    
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      BOT_URL: ${{ secrets.BOT_URL }}
+      WORKING_DIRECTORY: ./ncloud/parseFood
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+
+#     - name: Cache node modules
+#       uses: actions/cache@v2
+#       # 해당 step을 대표하는 id를 설정
+#       id: cache
+#       with:
+#         path: node_modules
+#         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+#         restore-keys: |
+#           ${{ runner.os }}-yarn-
+    - name: Install
+      run: yarn install
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+    - name: Run
+      run: node index.js
+      working-directory: ${{ env.WORKING_DIRECTORY }}
