@@ -13,7 +13,7 @@ function parseTable($, $table) {
       const $liList = $(e2).find('li');
 
       if ($liList.length === 0) {
-        menus.push($(e2).text());
+        menus.push($(e2).html().split('<br>').join('\n'));
       } else {
         const menusOfDay =  $liList.map((index, e) => $(e).text()).toArray();
         menus.push(menusOfDay.join('\n'))
@@ -29,7 +29,7 @@ function parseTable($, $table) {
 function parseMenus(html) {
   const $ = cheerio.load(html);
 
-  const $table = $('.menu_scrollArea table');
+  const $table = $('table.tblType03');
   const $jinsu = $table.eq(0);
   const $medi = $table.eq(1);
   const $hu = $table.eq(2);
