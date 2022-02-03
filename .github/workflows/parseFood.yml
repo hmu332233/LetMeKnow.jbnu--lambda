@@ -30,17 +30,17 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-#         cache: 'yarn'
+        # cache: 'yarn' cache 사용시 action이 실행되는 디렉토리에서 yarn.lock 파일을 찾는데, 이번 같은 경우는 특정 디렉토리에서 캐싱을 하기 때문에 불가능
 
-#     - name: Cache node modules
-#       uses: actions/cache@v2
-#       # 해당 step을 대표하는 id를 설정
-#       id: cache
-#       with:
-#         path: node_modules
-#         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#         restore-keys: |
-#           ${{ runner.os }}-yarn-
+    - name: Cache node modules
+      uses: actions/cache@v2
+      id: cache # 해당 step을 대표하는 id를 설정, 밑에서 steps.cache.outputs.cache-hit 와 같은 값을 이용해서 캐싱되었을때 특정 step을 넘어가거나 할 수도 있음
+      with:
+        path: ${{ env.WORKING_DIRECTORY }}/node_modules
+        key: ${{ runner.os }}-yarn-parse-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-parse-
+
     - name: Install
       run: yarn install
       working-directory: ${{ env.WORKING_DIRECTORY }}
