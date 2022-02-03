@@ -17,8 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      DB_URL: ${{ secrets.DB_URL }}
-      BOT_URL: ${{ secrets.BOT_URL }}
       WORKING_DIRECTORY: ./ncloud/parseFood
 
     strategy:
@@ -48,4 +46,8 @@ jobs:
       working-directory: ${{ env.WORKING_DIRECTORY }}
     - name: Run
       run: yarn start
+      env:
+        DB_URL: ${{ secrets.DB_URL }}
+        BOT_URL: ${{ secrets.BOT_URL }}
       working-directory: ${{ env.WORKING_DIRECTORY }}
+      
