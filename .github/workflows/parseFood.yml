@@ -37,16 +37,15 @@ jobs:
       # 해당 step을 대표하는 id를 설정
       id: cache
       with:
-        path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        path: ${{ env.WORKING_DIRECTORY }}/node_modules
+        key: ${{ runner.os }}-yarn-parse-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
-      working-directory: ${{ env.WORKING_DIRECTORY }}
+          ${{ runner.os }}-yarn-parse-
 
     - name: Install
       run: yarn install
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      
+
     - name: Run
       run: yarn start
       env:
