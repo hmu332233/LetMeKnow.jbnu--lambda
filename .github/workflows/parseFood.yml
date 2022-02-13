@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
   schedule:
   - cron: '0 20 * * *' # 5시
-  - cron: '0 18 * * 1' # 9시
-  - cron: '0 20 * * 1'  # 11시
-  - cron: '0 3 * * 2' # 18시
+  - cron: '0 0 * * 1' # 9시
+  - cron: '0 2 * * 1'  # 11시
+  - cron: '0 9 * * 1' # 18시
 
 jobs:
   parse:
