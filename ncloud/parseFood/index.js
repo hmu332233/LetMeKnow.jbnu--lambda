@@ -2,6 +2,7 @@ const { getHtml, sendSlackMessage } = require('./modules/utils');
 const { connectDB, insertDocument } = require('./modules/db');
 const { parseMenus } = require('./modules/parse');
 const { normalize, normalizeHu } = require('./modules/normalize');
+const { createHistoryFile } = require('./modules/file');
 
 const DB_URL = process.env.DB_URL;
 const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/menu/week_menu.php';
@@ -38,6 +39,7 @@ async function main() {
 
   for (let data of dataList) {
     await insertDocument(db, data);
+    createHistoryFile(data.collectionName, data.data);
   }
 
   await client.close();
