@@ -56,6 +56,6 @@ jobs:
         add: '.'
         default_author: github_actions
         pathspec_error_handling: exitImmediately
-        push: 'origin main'
+        push: 'origin master'
 
       
