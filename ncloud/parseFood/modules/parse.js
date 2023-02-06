@@ -23,7 +23,7 @@ function parseTable($, $table) {
   });
 
   console.log(menus)
-  return menus;
+  return menus.map(v => v.trim());
 }
 
 function parseMenus(html) {
