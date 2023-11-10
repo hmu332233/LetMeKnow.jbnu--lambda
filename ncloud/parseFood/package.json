@@ -9,7 +9,7 @@
   "author": "minung.han",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.2",
     "mongodb": "^4.3.1"
   }
