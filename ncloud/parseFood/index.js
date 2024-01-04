@@ -5,7 +5,7 @@ const { normalize, normalizeHu } = require('./modules/normalize');
 const { createHistoryFile } = require('./modules/file');
 
 const DB_URL = process.env.DB_URL;
-const PARSE_TARGET_URL = 'http://sobi.chonbuk.ac.kr/menu/week_menu.php';
+const PARSE_TARGET_URL = 'https://coopjbnu.kr/menu/week_menu.php';
 const BOT_URL = process.env.BOT_URL;
 
 
@@ -15,7 +15,7 @@ async function main() {
     connectDB(DB_URL)
   ]);
 
-  const { jinsuMenus, mediMenus, huMenus, jungdamMenus } = parseMenus(html);
+  const { jinsuMenus, mediMenus, huMenus } = parseMenus(html);
 
   const db = client.db('test');
   const dataList = [
@@ -31,10 +31,6 @@ async function main() {
       collectionName: 'hu_menus',
       data: normalizeHu('후생관', huMenus)
     },
-    {
-      collectionName: 'jungdam_menus',
-      data: normalize('정담원', jungdamMenus)
-    }
   ];
 
   for (let data of dataList) {
