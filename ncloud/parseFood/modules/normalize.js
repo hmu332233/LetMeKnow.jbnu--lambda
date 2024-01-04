@@ -62,11 +62,11 @@ function normalizeHu(place = '후생관', menus) {
       // { place, week: '금', time: '중식', category: '오므라이스', menus: menus[41] },
     ],
     dinner: [
-      { place, week: '월', time: '석식', category: '백반', menus: '운영 없음' },
-      { place, week: '화', time: '석식', category: '백반', menus: '운영 없음' },
-      { place, week: '수', time: '석식', category: '백반', menus: '운영 없음' },
-      { place, week: '목', time: '석식', category: '백반', menus: '운영 없음' },
-      { place, week: '금', time: '석식', category: '백반', menus: '운영 없음' },
+      { place, week: '월', time: '석식', category: '백반', menus: '운영없음' },
+      { place, week: '화', time: '석식', category: '백반', menus: '운영없음' },
+      { place, week: '수', time: '석식', category: '백반', menus: '운영없음' },
+      { place, week: '목', time: '석식', category: '백반', menus: '운영없음' },
+      { place, week: '금', time: '석식', category: '백반', menus: '운영없음' },
     ]
   }
 }
