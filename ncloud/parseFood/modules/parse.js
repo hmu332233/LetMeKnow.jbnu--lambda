@@ -7,10 +7,14 @@ function parseTable($, $table) {
   $trList.each((_, e1) => {
     const $tdList = $(e1).find('td');
     $tdList.each((_, e2) => {
-      menus.push($(e2).text().trim());
+      const texts = $(e2).contents().map((_, e3) => $(e3).text().trim()).get();
+      const filteredTexts = texts.filter((text) => text !== '');
+      const joinedTexts = filteredTexts.join('\n');
+      menus.push(joinedTexts);
     });
   });
 
+  console.log(menus)
   return menus;
 }
 
