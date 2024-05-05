@@ -2,21 +2,16 @@ const cheerio = require('cheerio');
 
 function parseTable($, $table) {
   const $trList = $table.find('tbody > tr');
-
-  const getLine = (e) => $(e).html().split('<br>').join('\n');
   const menus = [];
 
   $trList.each((_, e1) => {
     const $tdList = $(e1).find('td');
-
     $tdList.each((_, e2) => {
-      if ($(e2).find('span').length > 0)
-        menus.push(getLine($(e2).find('span')));
-      else menus.push(getLine(e2));
+      menus.push($(e2).text().trim());
     });
   });
 
-  return menus.map((v) => v.trim());
+  return menus;
 }
 
 function parseMenus(html) {
