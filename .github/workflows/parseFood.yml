@@ -21,19 +21,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         # cache: 'yarn' cache 사용시 action이 실행되는 디렉토리에서 yarn.lock 파일을 찾는데, 이번 같은 경우는 특정 디렉토리에서 캐싱을 하기 때문에 불가능
 
     - name: Cache node modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache # 해당 step을 대표하는 id를 설정, 밑에서 steps.cache.outputs.cache-hit 와 같은 값을 이용해서 캐싱되었을때 특정 step을 넘어가거나 할 수도 있음
       with:
         path: ${{ env.WORKING_DIRECTORY }}/node_modules
@@ -57,5 +57,3 @@ jobs:
         default_author: github_actions
         pathspec_error_handling: exitImmediately
         push: 'origin master'
-
-      
