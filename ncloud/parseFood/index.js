@@ -5,7 +5,7 @@ const { normalize, normalizeHu } = require('./modules/normalize');
 const { createHistoryFile } = require('./modules/file');
 
 const DB_URL = process.env.DB_URL;
-const PARSE_TARGET_URL = 'https://coopjbnu.kr/menu/week_menu.php';
+const PARSE_TARGET_URL = process.env.PARSE_TARGET_URL || 'https://coopjbnu.kr/menu/week_menu.php';
 const BOT_URL = process.env.BOT_URL;
 
 
