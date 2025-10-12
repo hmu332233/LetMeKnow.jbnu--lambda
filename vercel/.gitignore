@@ -1,0 +1,7 @@
+.vercel
+node_modules
+.env
+.env.local
+.yarn
+.pnp.*
+yarn-error.log
