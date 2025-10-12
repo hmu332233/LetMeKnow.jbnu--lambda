@@ -49,6 +49,7 @@ jobs:
       env:
         DB_URL: ${{ secrets.DB_URL }}
         BOT_URL: ${{ secrets.BOT_URL }}
+        PARSE_TARGET_URL: ${{ secrets.PARSE_TARGET_URL }}
       working-directory: ${{ env.WORKING_DIRECTORY }}
     - name: Create history file
       uses: EndBug/add-and-commit@v9
