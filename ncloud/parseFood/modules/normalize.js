@@ -71,7 +71,43 @@ function normalizeHu(place = '후생관', menus) {
   }
 }
 
+/**
+ * 기숙사 메뉴 정규화 함수
+ * @param {string} place - 장소명 (참빛관, 새빛관, 특성화)
+ * @param {Array} menus - [{ dayOfWeek, breakfast, lunch, dinner }, ...]
+ * @returns {Object} { breakfast, lunch, dinner }
+ */
+function normalizeDormitory(place, menus) {
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  const filtered = menus.filter(m => weekdays.includes(m.dayOfWeek));
+
+  return {
+    breakfast: filtered.map(m => ({
+      place,
+      week: m.dayOfWeek,
+      time: '조식',
+      category: '기숙사',
+      menus: m.breakfast
+    })),
+    lunch: filtered.map(m => ({
+      place,
+      week: m.dayOfWeek,
+      time: '중식',
+      category: '기숙사',
+      menus: m.lunch
+    })),
+    dinner: filtered.map(m => ({
+      place,
+      week: m.dayOfWeek,
+      time: '석식',
+      category: '기숙사',
+      menus: m.dinner
+    })),
+  }
+}
+
 module.exports = {
   normalize,
-  normalizeHu
+  normalizeHu,
+  normalizeDormitory
 }

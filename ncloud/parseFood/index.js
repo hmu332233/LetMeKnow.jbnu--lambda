@@ -1,8 +1,9 @@
 const { getHtml, sendSlackMessage } = require('./modules/utils');
 const { connectDB, insertDocument } = require('./modules/db');
 const { parseMenus } = require('./modules/parse');
-const { normalize, normalizeHu } = require('./modules/normalize');
+const { normalize, normalizeHu, normalizeDormitory } = require('./modules/normalize');
 const { createHistoryFile } = require('./modules/file');
+const { requestAllDormitoryMenus } = require('./modules/parseDormitory');
 
 const DB_URL = process.env.DB_URL;
 const PARSE_TARGET_URL = process.env.PARSE_TARGET_URL || 'https://coopjbnu.kr/menu/week_menu.php';
@@ -10,12 +11,14 @@ const BOT_URL = process.env.BOT_URL;
 
 
 async function main() {
-  const [html, client] = await Promise.all([
+  const [html, client, dormitoryMenus] = await Promise.all([
     getHtml(PARSE_TARGET_URL),
-    connectDB(DB_URL)
+    connectDB(DB_URL),
+    requestAllDormitoryMenus()
   ]);
 
   const { jinsuMenus, mediMenus, huMenus } = parseMenus(html);
+  const { chambit, saebit, special } = dormitoryMenus;
 
   const db = client.db('test');
   const dataList = [
@@ -30,6 +33,18 @@ async function main() {
     {
       collectionName: 'hu_menus',
       data: normalizeHu('후생관', huMenus)
+    },
+    {
+      collectionName: 'chambit_menus',
+      data: normalizeDormitory('참빛관', chambit)
+    },
+    {
+      collectionName: 'saebit_menus',
+      data: normalizeDormitory('새빛관', saebit)
+    },
+    {
+      collectionName: 'special_menus',
+      data: normalizeDormitory('특성화', special)
     },
   ];
 
