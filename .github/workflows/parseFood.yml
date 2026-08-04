@@ -5,11 +5,11 @@ name: ParseFood
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: '0 20 * * *' # 5시
-  - cron: '0 0 * * 1' # 9시
-  - cron: '0 2 * * 1'  # 11시
-  - cron: '0 9 * * 1' # 18시
+  # schedule:
+  # - cron: '0 20 * * *' # 5시
+  # - cron: '0 0 * * 1' # 9시
+  # - cron: '0 2 * * 1'  # 11시
+  # - cron: '0 9 * * 1' # 18시
 
 jobs:
   parse:
