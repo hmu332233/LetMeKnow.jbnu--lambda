@@ -32,10 +32,15 @@ function getWeekdayDates(date = new Date()) {
 }
 
 async function requestMenu(apiUrl, date, { now = 'Y' } = {}) {
+  const apiOrigin = new URL(apiUrl).origin;
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      'Accept': 'application/json, text/javascript, */*; q=0.01',
+      'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Referer': `${apiOrigin}/menu/week_menu.php`,
       'X-Requested-With': 'XMLHttpRequest'
     },
     body: new URLSearchParams({
