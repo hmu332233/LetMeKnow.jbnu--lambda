@@ -1,7 +1,17 @@
 const MongoClient = require('mongodb').MongoClient;
 
 async function connectDB(url) {
-  const client = await MongoClient.connect(url, { useNewUrlParser: true });
+  if (!url) {
+    throw new Error('DB_URL is required');
+  }
+
+  const client = new MongoClient(url, {
+    appName: 'letmeknow-parse-food',
+    connectTimeoutMS: 10000,
+    serverSelectionTimeoutMS: 10000
+  });
+
+  await client.connect();
   return client;
 }
 

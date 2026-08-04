@@ -1,38 +1,37 @@
-const { getHtml, sendSlackMessage } = require('./modules/utils');
+const { sendSlackMessage } = require('./modules/utils');
 const { connectDB, insertDocument } = require('./modules/db');
-const { parseMenus } = require('./modules/parse');
+const { requestWeeklyMenus, parseMenus } = require('./modules/parse');
 const { normalize, normalizeHu, normalizeDormitory } = require('./modules/normalize');
 const { createHistoryFile } = require('./modules/file');
 const { requestAllDormitoryMenus } = require('./modules/parseDormitory');
 
 const DB_URL = process.env.DB_URL;
-const PARSE_TARGET_URL = process.env.PARSE_TARGET_URL || 'https://coopjbnu.kr/menu/week_menu.php';
 const BOT_URL = process.env.BOT_URL;
 
 
 async function main() {
-  const [html, client, dormitoryMenus] = await Promise.all([
-    getHtml(PARSE_TARGET_URL),
-    connectDB(DB_URL),
+  const [weeklyMenus, dormitoryMenus] = await Promise.all([
+    requestWeeklyMenus(),
     requestAllDormitoryMenus()
   ]);
 
-  const { jinsuMenus, mediMenus, huMenus } = parseMenus(html);
+  const { dates, jinsuMenus, mediMenus, huMenus } = parseMenus(weeklyMenus);
   const { chambit, saebit, special } = dormitoryMenus;
 
+  const client = await connectDB(DB_URL);
   const db = client.db('test');
   const dataList = [
     {
       collectionName: 'jinsu_menus',
-      data: normalize('진수당', jinsuMenus)
+      data: normalize('진수당', jinsuMenus, dates)
     },
     {
       collectionName: 'medi_menus',
-      data: normalize('의대', mediMenus)
+      data: normalize('의대', mediMenus, dates)
     },
     {
       collectionName: 'hu_menus',
-      data: normalizeHu('후생관', huMenus)
+      data: normalizeHu('후생관', huMenus, dates)
     },
     {
       collectionName: 'chambit_menus',
@@ -48,16 +47,21 @@ async function main() {
     },
   ];
 
-  for (let data of dataList) {
-    await insertDocument(db, data);
-    createHistoryFile(data.collectionName, data.data);
+  try {
+    for (let data of dataList) {
+      await insertDocument(db, data);
+      createHistoryFile(data.collectionName, data.data);
+    }
+  } finally {
+    await client.close();
   }
-
-  await client.close();
 
   await sendSlackMessage({ url: BOT_URL, message: '파싱이 완료되었습니다.' });
 
   return { done: true };
 }
 
-main();
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

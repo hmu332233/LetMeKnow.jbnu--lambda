@@ -1,30 +1,30 @@
-function normalize(place, menus) {
+function normalize(place, menus, dates = []) {
   return {
     lunch: [
-      { place, week: '월', time: '중식', category: '백반', menus: menus[0] },
-      { place, week: '화', time: '중식', category: '백반', menus: menus[1] },
-      { place, week: '수', time: '중식', category: '백반', menus: menus[2] },
-      { place, week: '목', time: '중식', category: '백반', menus: menus[3] },
-      { place, week: '금', time: '중식', category: '백반', menus: menus[4] },
+      { place, date: dates[0], week: '월', time: '중식', category: '백반', menus: menus[0] },
+      { place, date: dates[1], week: '화', time: '중식', category: '백반', menus: menus[1] },
+      { place, date: dates[2], week: '수', time: '중식', category: '백반', menus: menus[2] },
+      { place, date: dates[3], week: '목', time: '중식', category: '백반', menus: menus[3] },
+      { place, date: dates[4], week: '금', time: '중식', category: '백반', menus: menus[4] },
     ],
     dinner: [
-      { place, week: '월', time: '석식', category: '백반', menus: menus[5] },
-      { place, week: '화', time: '석식', category: '백반', menus: menus[6] },
-      { place, week: '수', time: '석식', category: '백반', menus: menus[7] },
-      { place, week: '목', time: '석식', category: '백반', menus: menus[8] },
-      { place, week: '금', time: '석식', category: '백반', menus: menus[9] },
+      { place, date: dates[0], week: '월', time: '석식', category: '백반', menus: menus[5] },
+      { place, date: dates[1], week: '화', time: '석식', category: '백반', menus: menus[6] },
+      { place, date: dates[2], week: '수', time: '석식', category: '백반', menus: menus[7] },
+      { place, date: dates[3], week: '목', time: '석식', category: '백반', menus: menus[8] },
+      { place, date: dates[4], week: '금', time: '석식', category: '백반', menus: menus[9] },
     ],
   }
 };
 
-function normalizeHu(place = '후생관', menus) {
-  return {
+function normalizeHu(place = '후생관', menus, dates = []) {
+  const normalized = {
     breakfast: [
-      { place, week: '월', time: '조식', category: '찌개 백반', menus: menus[0] },
-      { place, week: '화', time: '조식', category: '찌개 백반', menus: menus[1] },
-      { place, week: '수', time: '조식', category: '찌개 백반', menus: menus[2] },
-      { place, week: '목', time: '조식', category: '찌개 백반', menus: menus[3] },
-      { place, week: '금', time: '조식', category: '찌개 백반', menus: menus[4] },
+      { place, date: dates[0], week: '월', time: '조식', category: '찌개 백반', menus: menus[0] },
+      { place, date: dates[1], week: '화', time: '조식', category: '찌개 백반', menus: menus[1] },
+      { place, date: dates[2], week: '수', time: '조식', category: '찌개 백반', menus: menus[2] },
+      { place, date: dates[3], week: '목', time: '조식', category: '찌개 백반', menus: menus[3] },
+      { place, date: dates[4], week: '금', time: '조식', category: '찌개 백반', menus: menus[4] },
     ],
     lunch: [
       { place, week: '월', time: '중식', category: '찌개', menus: menus[5] },
@@ -68,7 +68,17 @@ function normalizeHu(place = '후생관', menus) {
       { place, week: '목', time: '석식', category: '백반', menus: '운영없음' },
       { place, week: '금', time: '석식', category: '백반', menus: '운영없음' },
     ]
-  }
+  };
+
+  const dateByWeek = Object.fromEntries(
+    ['월', '화', '수', '목', '금'].map((week, index) => [week, dates[index]])
+  );
+
+  Object.values(normalized).flat().forEach((menu) => {
+    menu.date ??= dateByWeek[menu.week];
+  });
+
+  return normalized;
 }
 
 /**
